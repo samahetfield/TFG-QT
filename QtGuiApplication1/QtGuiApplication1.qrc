@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="QtGuiApplication1">
+    </qresource>
+    <qresource prefix="NotaDialog">
+    </qresource>
+</RCC>
