@@ -8,6 +8,8 @@
 *
 *      Author: Zacarias
 */
+#define _CRT_SECURE_NO_DEPRECATE
+#include <stdio.h>
 
 #include <iostream>// For std::cout
 #include <vector>  // For std::vector

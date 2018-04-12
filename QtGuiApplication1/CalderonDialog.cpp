@@ -1,3 +1,6 @@
+#define _CRT_SECURE_NO_DEPRECATE
+#include <stdio.h>
+
 #include "CalderonDialog.h"
 
 CalderonDialog::CalderonDialog(QWidget *parent)

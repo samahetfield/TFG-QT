@@ -1,3 +1,6 @@
+#define _CRT_SECURE_NO_DEPRECATE
+#include <stdio.h>
+
 #include "QtGuiApplication1.h"
 #include <QtWidgets/QApplication>
 
