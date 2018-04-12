@@ -19,6 +19,9 @@ public:
 	QtGuiApplication1(QWidget *parent = Q_NULLPTR);
 
 private:
+	QTableWidget **tab_voz;
+	string *voces;
+	int voces_size;
 	string frase;
 	int numero_compases;
 	int boton_pulsado;

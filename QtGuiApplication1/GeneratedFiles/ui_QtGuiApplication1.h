@@ -110,7 +110,7 @@ public:
         QTableWidgetItem *__qtablewidgetitem5 = new QTableWidgetItem();
         tableWidget->setVerticalHeaderItem(5, __qtablewidgetitem5);
         tableWidget->setObjectName(QStringLiteral("tableWidget"));
-        tableWidget->setGeometry(QRect(10, 10, 881, 231));
+        tableWidget->setGeometry(QRect(10, 10, 885, 230));
         tabWidget->addTab(tab_2, QString());
         nueva_voz = new QPushButton(centralWidget);
         nueva_voz->setObjectName(QStringLiteral("nueva_voz"));

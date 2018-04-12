@@ -30,6 +30,10 @@ QtGuiApplication1::QtGuiApplication1(QWidget *parent)
 	ui.button_silencio->setIcon(silencio_icon);
 	ui.button_calderon->setIcon(calderon_icon);
 	ui.play->setIcon(play_icon);
+	voces = new string[1];
+	tab_voz = new QTableWidget*[1];
+	tab_voz[0] = ui.tableWidget;
+	voces_size = 1;
 
 }
 
@@ -61,7 +65,31 @@ void QtGuiApplication1::on_button_calderon_clicked() {
 
 void QtGuiApplication1::on_nueva_voz_clicked() {
 	QWidget *nuevo_w = new QWidget();
+	QTableWidget *nueva_voz = new QTableWidget(6,0,nuevo_w);
+	nueva_voz->setGeometry(10, 10, 850, 230);
+
 	ui.tabWidget->addTab(nuevo_w, QString("Voz %0").arg(ui.tabWidget->count() +1));
+
+	QTableWidget **tab_aux = new QTableWidget*[voces_size+1];
+
+	for (int i = 0; i < voces_size; i++) {
+		tab_aux[i] = tab_voz[i];
+	}
+
+	tab_aux[voces_size - 1] = nueva_voz;
+
+	delete[] tab_voz;
+	tab_voz = tab_aux;
+
+	string *aux = new string[voces_size + 1];
+
+	for (int i = 0; i < voces_size; i++) {
+		aux[i] = voces[i];
+	}
+
+	delete[] voces;
+	voces = aux;
+	voces_size++;
 }
 
 
@@ -71,6 +99,7 @@ void QtGuiApplication1::on_pushButton_clicked() {
 	string midi_instrumento = "";
 	string instrumento;
 	int fila = 0;
+	frase = "";
 	
 	switch (boton_pulsado)
 	{
@@ -119,10 +148,21 @@ void QtGuiApplication1::on_pushButton_clicked() {
 			fila = 0;
 		}
 
-		ui.tableWidget->insertColumn(ui.tableWidget->columnCount());
+		int f_aux = ui.tabWidget->currentIndex();
+
+		string voz_aux = voces[f_aux];
+		voz_aux += frase;
+
+		voces[f_aux] = voz_aux;
+
+		QTableWidget *tab_select = tab_voz[f_aux];
+
+		tab_select->insertColumn(tab_select->columnCount());
+		//ui.tableWidget->insertColumn(ui.tableWidget->columnCount());
 		QTableWidgetItem* item = new QTableWidgetItem;
 		item->setIcon(QIcon(".\\img\\nota.png"));
-		ui.tableWidget->setItem(fila, numero_compases, item);
+		tab_select->setItem(fila, numero_compases, item);
+		//ui.tableWidget->setItem(fila, numero_compases, item);
 
 		break;
 	}
@@ -172,6 +212,10 @@ void QtGuiApplication1::on_pushButton_clicked() {
 
 			frase += midi_instrumento + "\n";
 
+			int f_aux = ui.tabWidget->currentIndex();
+
+			string voz_aux = voces[f_aux];
+			voz_aux += frase;
 
 			ui.tableWidget->insertColumn(ui.tableWidget->columnCount());
 			QTableWidgetItem* item = new QTableWidgetItem;
@@ -191,6 +235,11 @@ void QtGuiApplication1::on_pushButton_clicked() {
 			frase += "Silencio\n";
 		}
 
+		int f_aux = ui.tabWidget->currentIndex();
+
+		string voz_aux = voces[f_aux];
+		voz_aux += frase;
+
 		ui.tableWidget->insertColumn(ui.tableWidget->columnCount());
 		QTableWidgetItem* item = new QTableWidgetItem;
 		item->setIcon(QIcon(".\\img\\silencio.png"));
@@ -207,6 +256,10 @@ void QtGuiApplication1::on_pushButton_clicked() {
 		int longitud = calderon->getLongitud();
 		frase += to_string(longitud) + "\n";
 
+		int f_aux = ui.tabWidget->currentIndex();
+
+		string voz_aux = voces[f_aux];
+		voz_aux += frase;
 
 		ui.tableWidget->insertColumn(ui.tableWidget->columnCount());
 		QTableWidgetItem* item = new QTableWidgetItem;
@@ -220,19 +273,33 @@ void QtGuiApplication1::on_pushButton_clicked() {
 	}
 
 	numero_compases++;
-
-
 }
 
 
 void QtGuiApplication1::on_play_clicked() {
 	fstream archivo("Partitura.txt");
 
+	string texto_partitura = "";
+
+	if (voces_size > 1) {
+		for (int i = 0; i < voces_size -1; i++) {
+			texto_partitura += voces[i];
+			texto_partitura += "Fin voz\n";
+		}
+		texto_partitura += voces[voces_size - 1];
+	}
+	else {
+		texto_partitura = voces[0];
+	}
+
+
+
+
 	if (!archivo.is_open()) {
 		archivo.open("Partitura.txt", ios::out);
 	}
 
-	archivo << frase << endl;
+	archivo << texto_partitura << endl;
 
 	archivo.close();
 
