@@ -33,11 +33,11 @@ QtGuiApplication1::QtGuiApplication1(QWidget *parent)
 	ui.button_silencio->setIcon(silencio_icon);
 	ui.button_calderon->setIcon(calderon_icon);
 	ui.play->setIcon(play_icon);
+
 	voces = new string[1];
 	tab_voz = new QTableWidget*[1];
 	tab_voz[0] = ui.tableWidget;
 	voces_size = 1;
-
 }
 
 
@@ -79,7 +79,7 @@ void QtGuiApplication1::on_nueva_voz_clicked() {
 		tab_aux[i] = tab_voz[i];
 	}
 
-	tab_aux[voces_size - 1] = nueva_voz;
+	tab_aux[voces_size] = nueva_voz;
 
 	delete[] tab_voz;
 	tab_voz = tab_aux;
@@ -161,11 +161,9 @@ void QtGuiApplication1::on_pushButton_clicked() {
 		QTableWidget *tab_select = tab_voz[f_aux];
 
 		tab_select->insertColumn(tab_select->columnCount());
-		//ui.tableWidget->insertColumn(ui.tableWidget->columnCount());
 		QTableWidgetItem* item = new QTableWidgetItem;
 		item->setIcon(QIcon(".\\img\\nota.png"));
 		tab_select->setItem(fila, numero_compases, item);
-		//ui.tableWidget->setItem(fila, numero_compases, item);
 
 		break;
 	}
