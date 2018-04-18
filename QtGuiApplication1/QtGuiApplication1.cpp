@@ -19,20 +19,22 @@ QtGuiApplication1::QtGuiApplication1(QWidget *parent)
 
 	ui.setupUi(this);
 	
-	QStringList list = (QStringList() << "Bombo" << "Caja" << "Hit-Hat (abierto)" << "Hit-hat (cerrado)");
+	QStringList list = (QStringList() << "Bombo" << "Caja" << "Hit-Hat (abierto)" << "Hit-hat (cerrado)" << "Aro de caja" << "Rimshot" << "Base (Goliat)" << "Hit-Hat (pedal)" << "Tom 1" << "Tom 2" << "Tom 3" << "Crash" << "Ride (campana)" << "Ride" << "Splash" << "Cencerro");
 	ui.comboBox->addItems(list);
 
-	QIcon nota_icon(QPixmap(".\\img\\nota.png"));
-	QIcon tremolo_icon(QPixmap(".\\img\\tremolo.png"));
-	QIcon silencio_icon(QPixmap(".\\img\\silencio.png"));
-	QIcon calderon_icon(QPixmap(".\\img\\calderon.png"));
-	QIcon play_icon(QPixmap(".\\img\\play.png"));
+	 nota_icon = new QIcon(QPixmap(".\\img\\nota.png"));
+	 tremolo_icon = new QIcon(QPixmap(".\\img\\tremolo.png"));
+	 silencio_icon = new QIcon(QPixmap(".\\img\\silencio.png"));
+	 calderon_icon= new QIcon(QPixmap(".\\img\\calderon.png"));
+	 play_icon = new QIcon(QPixmap(".\\img\\play.png"));
 
-	ui.button_nota->setIcon(nota_icon);
-	ui.button_tremolo->setIcon(tremolo_icon);
-	ui.button_silencio->setIcon(silencio_icon);
-	ui.button_calderon->setIcon(calderon_icon);
-	ui.play->setIcon(play_icon);
+	ui.button_nota->setIcon(*nota_icon);
+	ui.button_tremolo->setIcon(*tremolo_icon);
+	ui.button_silencio->setIcon(*silencio_icon);
+	ui.button_calderon->setIcon(*calderon_icon);
+	ui.play->setIcon(*play_icon);
+
+	ui.pushButton->setEnabled(false);
 
 	voces = new string[1];
 	tab_voz = new QTableWidget*[1];
@@ -45,18 +47,23 @@ void QtGuiApplication1::on_button_nota_clicked() {
 	nota = new NotaDialog(this);
 	nota->show();
 	boton_pulsado = 0;
+	ui.pushButton->setEnabled(true);
 }
 
 void QtGuiApplication1::on_button_tremolo_clicked() {
 	tremolo = new TremoloDialog(this);
 	tremolo->show();
 	boton_pulsado = 1;
+	ui.pushButton->setEnabled(true);
+
 }
 
 void QtGuiApplication1::on_button_silencio_clicked() {
 	silencio = new SilencioDialog(this);
 	silencio->show();
 	boton_pulsado = 2;
+	ui.pushButton->setEnabled(true);
+
 }
 
 void QtGuiApplication1::on_button_calderon_clicked() {
@@ -64,6 +71,8 @@ void QtGuiApplication1::on_button_calderon_clicked() {
 	calderon->setMax(numero_compases);
 	calderon->show();
 	boton_pulsado = 3;
+	ui.pushButton->setEnabled(true);
+
 }
 
 void QtGuiApplication1::on_nueva_voz_clicked() {
@@ -93,6 +102,8 @@ void QtGuiApplication1::on_nueva_voz_clicked() {
 	delete[] voces;
 	voces = aux;
 	voces_size++;
+	ui.pushButton->setEnabled(false);
+
 }
 
 
@@ -116,17 +127,53 @@ void QtGuiApplication1::on_pushButton_clicked() {
 
 		instrumento = (ui.comboBox->currentText()).toUtf8().constData();
 
-		if (instrumento == "Caja") {
-			midi_instrumento = "38";
-		}
-		else if (instrumento == "Bombo") {
+		if (instrumento == "Bombo") {
 			midi_instrumento = "35";
 		}
-		else if (instrumento == "Hit-Hat (abierto)") {
-			midi_instrumento = "44";
+		else if (instrumento == "Aro de caja") {
+			midi_instrumento = "37";
+		}
+		else if (instrumento == "Caja") {
+			midi_instrumento = "38";
+		}
+		else if (instrumento == "Rimshot") {
+			midi_instrumento = "39";
+		}
+		else if (instrumento == "Base (Goliat)") {
+			midi_instrumento = "41";
 		}
 		else if (instrumento == "Hit-Hat (cerrado)") {
+			midi_instrumento = "42";
+		}
+		else if (instrumento == "Hit-Hat (pedal)") {
+			midi_instrumento = "44";
+		}
+		else if (instrumento == "Tom 1") {
+			midi_instrumento = "45";
+		}
+		else if (instrumento == "Hit-Hat (abierto)") {
 			midi_instrumento = "46";
+		}
+		else if (instrumento == "Tom 2") {
+			midi_instrumento = "48";
+		}
+		else if (instrumento == "Crash") {
+			midi_instrumento = "49";
+		}
+		else if (instrumento == "Tom 3") {
+			midi_instrumento = "52";
+		}
+		else if (instrumento == "Ride (Campana)") {
+			midi_instrumento = "54";
+		}
+		else if (instrumento == "Splash") {
+			midi_instrumento = "55";
+		}
+		else if (instrumento == "Cencerro") {
+			midi_instrumento = "56";
+		}
+		else if (instrumento == "Ride") {
+			midi_instrumento = "59";
 		}
 
 
@@ -162,8 +209,8 @@ void QtGuiApplication1::on_pushButton_clicked() {
 
 		tab_select->insertColumn(tab_select->columnCount());
 		QTableWidgetItem* item = new QTableWidgetItem;
-		item->setIcon(QIcon(".\\img\\nota.png"));
-		tab_select->setItem(fila, numero_compases, item);
+		item->setIcon(*nota_icon);
+		tab_select->setItem(fila, (tab_select->columnCount())-1, item);
 
 		break;
 	}
@@ -198,17 +245,53 @@ void QtGuiApplication1::on_pushButton_clicked() {
 
 			instrumento = (ui.comboBox->currentText()).toUtf8().constData();
 
-			if (instrumento == "Caja") {
-				midi_instrumento = "38";
-			}
-			else if (instrumento == "Bombo") {
+			if (instrumento == "Bombo") {
 				midi_instrumento = "35";
 			}
-			else if (instrumento == "Hit-Hat (abierto)") {
-				midi_instrumento = "44";
+			else if (instrumento == "Aro de caja") {
+				midi_instrumento = "37";
+			}
+			else if (instrumento == "Caja") {
+				midi_instrumento = "38";
+			}
+			else if (instrumento == "Rimshot") {
+				midi_instrumento = "39";
+			}
+			else if (instrumento == "Base (Goliat)") {
+				midi_instrumento = "41";
 			}
 			else if (instrumento == "Hit-Hat (cerrado)") {
+				midi_instrumento = "42";
+			}
+			else if (instrumento == "Hit-Hat (pedal)") {
+				midi_instrumento = "44";
+			}
+			else if (instrumento == "Tom 1") {
+				midi_instrumento = "45";
+			}
+			else if (instrumento == "Hit-Hat (abierto)") {
 				midi_instrumento = "46";
+			}
+			else if (instrumento == "Tom 2") {
+				midi_instrumento = "48";
+			}
+			else if (instrumento == "Crash") {
+				midi_instrumento = "49";
+			}
+			else if (instrumento == "Tom 3") {
+				midi_instrumento = "52";
+			}
+			else if (instrumento == "Ride (Campana)") {
+				midi_instrumento = "54";
+			}
+			else if (instrumento == "Splash") {
+				midi_instrumento = "55";
+			}
+			else if (instrumento == "Cencerro") {
+				midi_instrumento = "56";
+			}
+			else if (instrumento == "Ride") {
+				midi_instrumento = "59";
 			}
 
 			frase += midi_instrumento + "\n";
@@ -218,10 +301,15 @@ void QtGuiApplication1::on_pushButton_clicked() {
 			string voz_aux = voces[f_aux];
 			voz_aux += frase;
 
-			ui.tableWidget->insertColumn(ui.tableWidget->columnCount());
+			voces[f_aux] = voz_aux;
+
+
+			QTableWidget *tab_select = tab_voz[f_aux];
+
+			tab_select->insertColumn(tab_select->columnCount());
 			QTableWidgetItem* item = new QTableWidgetItem;
-			item->setIcon(QIcon(".\\img\\tremolo.png"));
-			ui.tableWidget->setItem(fila, numero_compases, item);
+			item->setIcon(*tremolo_icon);
+			tab_select->setItem(fila, (tab_select->columnCount()) - 1, item);
 
 
 		break;
@@ -241,10 +329,15 @@ void QtGuiApplication1::on_pushButton_clicked() {
 		string voz_aux = voces[f_aux];
 		voz_aux += frase;
 
-		ui.tableWidget->insertColumn(ui.tableWidget->columnCount());
+		voces[f_aux] = voz_aux;
+
+
+		QTableWidget *tab_select = tab_voz[f_aux];
+
+		tab_select->insertColumn(tab_select->columnCount());
 		QTableWidgetItem* item = new QTableWidgetItem;
-		item->setIcon(QIcon(".\\img\\silencio.png"));
-		ui.tableWidget->setItem(fila, numero_compases, item);
+		item->setIcon(*silencio_icon);
+		tab_select->setItem(fila, (tab_select->columnCount()) - 1, item);
 
 		break;
 	}
@@ -262,22 +355,31 @@ void QtGuiApplication1::on_pushButton_clicked() {
 		string voz_aux = voces[f_aux];
 		voz_aux += frase;
 
-		ui.tableWidget->insertColumn(ui.tableWidget->columnCount());
+		voces[f_aux] = voz_aux;
+
+
+		QTableWidget *tab_select = tab_voz[f_aux];
+
+		tab_select->insertColumn(tab_select->columnCount());
 		QTableWidgetItem* item = new QTableWidgetItem;
-		item->setIcon(QIcon(".\\img\\calderon.png"));
-		ui.tableWidget->setItem(fila, numero_compases, item);
+		item->setIcon(*calderon_icon);
+		tab_select->setItem(fila, (tab_select->columnCount()) - 1, item);
 
 		break;
 	}
 
 
 	}
-
+	ui.pushButton->setEnabled(false);
 	numero_compases++;
 }
 
 
 void QtGuiApplication1::on_play_clicked() {
+	int tempo_part = ui.tempoBox->value();
+
+	int tempo_bpm = (tempo_part * 500) / 180;
+
 	fstream archivo("Partitura.txt");
 
 	string texto_partitura = "";
@@ -324,7 +426,7 @@ void QtGuiApplication1::on_play_clicked() {
 	Partitura p(texto);
 
 	//cout << "Creada partitura" << endl;
-	MIDIfile file;
+	MIDIfile file(tempo_bpm, 1000000);
 	//cout << "Creado MIDIfile" << endl;
 	file.crearMidiDePartitura(p, 9);
 	//cout << "finalizado MIDIdePartitura" << endl;

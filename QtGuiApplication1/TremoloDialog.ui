@@ -139,6 +139,12 @@
       <height>22</height>
      </rect>
     </property>
+    <property name="minimum">
+     <number>1</number>
+    </property>
+    <property name="maximum">
+     <number>6</number>
+    </property>
    </widget>
    <widget class="QSpinBox" name="spinBox_5">
     <property name="geometry">
@@ -148,6 +154,12 @@
       <width>42</width>
       <height>22</height>
      </rect>
+    </property>
+    <property name="minimum">
+     <number>1</number>
+    </property>
+    <property name="maximum">
+     <number>6</number>
     </property>
    </widget>
    <widget class="QLabel" name="label_4">

@@ -30,6 +30,11 @@ private:
 	TremoloDialog *tremolo;
 	SilencioDialog *silencio;
 	CalderonDialog *calderon;
+	QIcon *nota_icon;
+	QIcon *tremolo_icon;
+	QIcon *calderon_icon;
+	QIcon *silencio_icon;
+	QIcon *play_icon;
 
 	public slots:
 	void on_pushButton_clicked();

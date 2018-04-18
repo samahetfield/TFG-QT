@@ -80,9 +80,13 @@ public:
         spinBox_4 = new QSpinBox(groupBox_2);
         spinBox_4->setObjectName(QStringLiteral("spinBox_4"));
         spinBox_4->setGeometry(QRect(10, 70, 42, 22));
+        spinBox_4->setMinimum(1);
+        spinBox_4->setMaximum(6);
         spinBox_5 = new QSpinBox(groupBox_2);
         spinBox_5->setObjectName(QStringLiteral("spinBox_5"));
         spinBox_5->setGeometry(QRect(90, 70, 42, 22));
+        spinBox_5->setMinimum(1);
+        spinBox_5->setMaximum(6);
         label_4 = new QLabel(groupBox_2);
         label_4->setObjectName(QStringLiteral("label_4"));
         label_4->setGeometry(QRect(10, 40, 47, 13));

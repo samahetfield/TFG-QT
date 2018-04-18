@@ -27,7 +27,7 @@ void TremoloDialog::on_comboBox_currentIndexChanged() {
 	string tipo = (ui.comboBox->currentText()).toUtf8().constData();
 
 	if (tipo == "Tremolo Intensidad") {
-		ui.spinBox_3->setEnabled(true);
+		ui.spinBox_3->setEnabled(false);
 		ui.spinBox_4->setEnabled(true);
 		ui.spinBox_5->setEnabled(true);
 	}

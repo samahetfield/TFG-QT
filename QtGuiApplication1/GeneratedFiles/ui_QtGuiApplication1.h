@@ -20,6 +20,7 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QSpinBox>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QTableWidget>
@@ -46,6 +47,8 @@ public:
     QWidget *tab_2;
     QTableWidget *tableWidget;
     QPushButton *nueva_voz;
+    QSpinBox *tempoBox;
+    QLabel *label_2;
     QMenuBar *menuBar;
     QMenu *menuArchivo;
     QToolBar *mainToolBar;
@@ -115,6 +118,14 @@ public:
         nueva_voz = new QPushButton(centralWidget);
         nueva_voz->setObjectName(QStringLiteral("nueva_voz"));
         nueva_voz->setGeometry(QRect(10, 560, 75, 23));
+        tempoBox = new QSpinBox(centralWidget);
+        tempoBox->setObjectName(QStringLiteral("tempoBox"));
+        tempoBox->setGeometry(QRect(750, 250, 81, 21));
+        tempoBox->setMinimum(30);
+        tempoBox->setMaximum(300);
+        label_2 = new QLabel(centralWidget);
+        label_2->setObjectName(QStringLiteral("label_2"));
+        label_2->setGeometry(QRect(750, 230, 71, 16));
         QtGuiApplication1Class->setCentralWidget(centralWidget);
         tabWidget->raise();
         label->raise();
@@ -126,6 +137,8 @@ public:
         button_calderon->raise();
         play->raise();
         nueva_voz->raise();
+        tempoBox->raise();
+        label_2->raise();
         menuBar = new QMenuBar(QtGuiApplication1Class);
         menuBar->setObjectName(QStringLiteral("menuBar"));
         menuBar->setGeometry(QRect(0, 0, 956, 21));
@@ -177,6 +190,7 @@ public:
         ___qtablewidgetitem5->setText(QApplication::translate("QtGuiApplication1Class", "6", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("QtGuiApplication1Class", "Voz", Q_NULLPTR));
         nueva_voz->setText(QApplication::translate("QtGuiApplication1Class", "Nueva voz", Q_NULLPTR));
+        label_2->setText(QApplication::translate("QtGuiApplication1Class", "Tempo (bpm)", Q_NULLPTR));
         menuArchivo->setTitle(QApplication::translate("QtGuiApplication1Class", "Archivo", Q_NULLPTR));
     } // retranslateUi
 

@@ -195,6 +195,35 @@
      <string>Nueva voz</string>
     </property>
    </widget>
+   <widget class="QSpinBox" name="tempoBox">
+    <property name="geometry">
+     <rect>
+      <x>750</x>
+      <y>250</y>
+      <width>81</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="minimum">
+     <number>30</number>
+    </property>
+    <property name="maximum">
+     <number>300</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>750</x>
+      <y>230</y>
+      <width>71</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Tempo (bpm)</string>
+    </property>
+   </widget>
    <zorder>tabWidget</zorder>
    <zorder>label</zorder>
    <zorder>pushButton</zorder>
@@ -205,6 +234,8 @@
    <zorder>button_calderon</zorder>
    <zorder>play</zorder>
    <zorder>nueva_voz</zorder>
+   <zorder>tempoBox</zorder>
+   <zorder>label_2</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

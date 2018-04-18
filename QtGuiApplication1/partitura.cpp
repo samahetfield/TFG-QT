@@ -247,14 +247,22 @@ public:
 			}
 		}
 		else if (tipo == INTENSIDAD) {
-			for (int i = 0;i<final;i++) {
-				double modif = modificador_tempo[0];
+			double tamBloque = inicio/3;
 
-				Nota aux(inten[i], nv[i], 1, 1, modif, no);
-
-				//Nota aux(inten[i],nv[i], 1, 1, modif, no);
-				res.push_back(aux);
+			for (int i = 0;i<nv.size();i++) {
+				double v = modificador_tempo[0];
+				double start = 1 / v;
+				double t = ((tamBloque - start)*(v + 0.5)) + 1;
+				double auxx = ((1 / v) - (1 / (v + 1))) / t;
+				for (int j = 0;j<t;j++) {
+					Nota aux(inten[i], nv[i], 1, 1, v, no);
+					res.push_back(aux);
+					start -= auxx;
+					v = 1 / start;
+				}
 			}
+
+			//Nota aux(inten[i],nv[i], 1, 1, modif, no);
 		}
 
 		return res;
@@ -374,7 +382,7 @@ public:
 						int intervalo_intensidades = 21;
 
 						vector<int> intensidades;
-						intensidades.resize(final + 1);
+						intensidades.resize(final+1);
 						double intervalo;
 
 						if (intensidad_ini < intensidad_fin) {
@@ -405,13 +413,13 @@ public:
 							intervalo = (intensidad_ini - intensidad_fin) / final;
 
 
-							for (int i = 0; i<final + 1; i++) {
+							for (int i = 0; i<final; i++) {
 								intensidades[final - (i + 1)] = intervalo * (i + 1);
 							}
 						}
 
 						vector<int> n_v(final, 2);
-						Tremolo trem(t, inicio, final, modificador_tempo[0], modificador_tempo[1], intensidades, n_v, nota_aux);
+						Tremolo trem(t, final, final, modificador_tempo[0], modificador_tempo[0], intensidades, n_v, nota_aux);
 						vector<Nota> aux = trem.parse();
 						notas.insert(notas.end(), aux.begin(), aux.end());
 					}

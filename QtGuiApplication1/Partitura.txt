@@ -1,9 +1,4 @@
-Fin voz
-
-35
+Tremolo-Intensidad 5 6 0 1 6 38
+Nota-127 0 46
 Nota-127 0 38
-Fin voz
-Nota-100 0 44
-Fin voz
-Nota-50 0 
 
