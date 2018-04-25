@@ -68,7 +68,12 @@ void QtGuiApplication1::on_button_silencio_clicked() {
 
 void QtGuiApplication1::on_button_calderon_clicked() {
 	calderon = new CalderonDialog(this);
-	calderon->setMax(numero_compases);
+	int f_aux = ui.tabWidget->currentIndex();
+
+	QTableWidget *tab_select = tab_voz[f_aux];
+
+	int maximum = tab_select->colorCount();
+	calderon->setMax(maximum);
 	calderon->show();
 	boton_pulsado = 3;
 	ui.pushButton->setEnabled(true);
