@@ -54,6 +54,9 @@
     <ClCompile Include="partitura.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Almacenar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="QtGuiApplication1.h">
@@ -71,6 +74,9 @@
     <QtMoc Include="CalderonDialog.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="Almacenar.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtGuiApplication1.ui">
@@ -86,6 +92,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="CalderonDialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="Almacenar.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

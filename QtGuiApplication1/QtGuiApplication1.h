@@ -6,6 +6,7 @@
 #include "TremoloDialog.h"
 #include "SilencioDialog.h"
 #include "CalderonDialog.h"
+#include "Almacenar.h"
 #include "midi.cpp"
 
 using namespace std;
@@ -30,6 +31,7 @@ private:
 	TremoloDialog *tremolo;
 	SilencioDialog *silencio;
 	CalderonDialog *calderon;
+	Almacenar *guardar;
 	QIcon *nota_icon;
 	QIcon *tremolo_icon;
 	QIcon *calderon_icon;

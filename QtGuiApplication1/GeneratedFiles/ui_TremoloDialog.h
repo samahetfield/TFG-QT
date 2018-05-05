@@ -46,7 +46,7 @@ public:
     {
         if (TremoloDialog->objectName().isEmpty())
             TremoloDialog->setObjectName(QStringLiteral("TremoloDialog"));
-        TremoloDialog->resize(533, 300);
+        TremoloDialog->resize(533, 301);
         comboBox = new QComboBox(TremoloDialog);
         comboBox->setObjectName(QStringLiteral("comboBox"));
         comboBox->setGeometry(QRect(180, 60, 171, 22));
@@ -65,9 +65,13 @@ public:
         spinBox_2 = new QSpinBox(groupBox);
         spinBox_2->setObjectName(QStringLiteral("spinBox_2"));
         spinBox_2->setGeometry(QRect(10, 70, 42, 22));
+        spinBox_2->setMinimum(1);
+        spinBox_2->setMaximum(6);
         spinBox_3 = new QSpinBox(groupBox);
         spinBox_3->setObjectName(QStringLiteral("spinBox_3"));
         spinBox_3->setGeometry(QRect(80, 70, 42, 22));
+        spinBox_3->setMinimum(1);
+        spinBox_3->setMaximum(6);
         label_2 = new QLabel(groupBox);
         label_2->setObjectName(QStringLiteral("label_2"));
         label_2->setGeometry(QRect(10, 40, 47, 13));

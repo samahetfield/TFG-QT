@@ -115,6 +115,7 @@
     </QtRcc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Almacenar.cpp" />
     <ClCompile Include="CalderonDialog.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="midi.cpp" />
@@ -128,6 +129,7 @@
     <QtMoc Include="QtGuiApplication1.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtUic Include="Almacenar.ui" />
     <QtUic Include="CalderonDialog.ui" />
     <QtUic Include="NotaDialog.ui" />
     <QtUic Include="QtGuiApplication1.ui" />
@@ -148,6 +150,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="CalderonDialog.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="Almacenar.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

@@ -19,7 +19,7 @@ QtGuiApplication1::QtGuiApplication1(QWidget *parent)
 
 	ui.setupUi(this);
 	
-	QStringList list = (QStringList() << "Bombo" << "Caja" << "Hit-Hat (abierto)" << "Hit-hat (cerrado)" << "Aro de caja" << "Rimshot" << "Base (Goliat)" << "Hit-Hat (pedal)" << "Tom 1" << "Tom 2" << "Tom 3" << "Crash" << "Ride (campana)" << "Ride" << "Splash" << "Cencerro");
+	QStringList list = (QStringList() << "Bombo" << "Caja" << "Hit-Hat (abierto)" << "Hit-Hat (cerrado)" << "Aro de caja" << "Rimshot" << "Base (Goliat)" << "Hit-Hat (pedal)" << "Tom 1" << "Tom 2" << "Tom 3" << "Crash" << "Ride (campana)" << "Ride" << "Splash" << "Cencerro");
 	ui.comboBox->addItems(list);
 
 	 nota_icon = new QIcon(QPixmap(".\\img\\nota.png"));
@@ -168,7 +168,7 @@ void QtGuiApplication1::on_pushButton_clicked() {
 		else if (instrumento == "Tom 3") {
 			midi_instrumento = "52";
 		}
-		else if (instrumento == "Ride (Campana)") {
+		else if (instrumento == "Ride (campana)") {
 			midi_instrumento = "54";
 		}
 		else if (instrumento == "Splash") {
@@ -211,10 +211,12 @@ void QtGuiApplication1::on_pushButton_clicked() {
 		voces[f_aux] = voz_aux;
 
 		QTableWidget *tab_select = tab_voz[f_aux];
+		QString ins_tab = QString::fromStdString(instrumento);
 
 		tab_select->insertColumn(tab_select->columnCount());
 		QTableWidgetItem* item = new QTableWidgetItem;
 		item->setIcon(*nota_icon);
+		item->setText(ins_tab);
 		tab_select->setItem(fila, (tab_select->columnCount())-1, item);
 
 		break;
@@ -286,7 +288,7 @@ void QtGuiApplication1::on_pushButton_clicked() {
 			else if (instrumento == "Tom 3") {
 				midi_instrumento = "52";
 			}
-			else if (instrumento == "Ride (Campana)") {
+			else if (instrumento == "Ride (campana)") {
 				midi_instrumento = "54";
 			}
 			else if (instrumento == "Splash") {
@@ -310,10 +312,12 @@ void QtGuiApplication1::on_pushButton_clicked() {
 
 
 			QTableWidget *tab_select = tab_voz[f_aux];
+			QString ins_tab = QString::fromStdString(instrumento);
 
 			tab_select->insertColumn(tab_select->columnCount());
 			QTableWidgetItem* item = new QTableWidgetItem;
 			item->setIcon(*tremolo_icon);
+			item->setText(ins_tab);
 			tab_select->setItem(fila, (tab_select->columnCount()) - 1, item);
 
 
@@ -338,10 +342,12 @@ void QtGuiApplication1::on_pushButton_clicked() {
 
 
 		QTableWidget *tab_select = tab_voz[f_aux];
+		QString ins_tab = QString::fromStdString(std::to_string(silencio->getLongitud()));
 
 		tab_select->insertColumn(tab_select->columnCount());
 		QTableWidgetItem* item = new QTableWidgetItem;
 		item->setIcon(*silencio_icon);
+		item->setText(ins_tab);
 		tab_select->setItem(fila, (tab_select->columnCount()) - 1, item);
 
 		break;
@@ -364,10 +370,13 @@ void QtGuiApplication1::on_pushButton_clicked() {
 
 
 		QTableWidget *tab_select = tab_voz[f_aux];
+		QString ins_tab = QString::fromStdString(std::to_string(longitud));
+
 
 		tab_select->insertColumn(tab_select->columnCount());
 		QTableWidgetItem* item = new QTableWidgetItem;
 		item->setIcon(*calderon_icon);
+		item->setText(ins_tab);
 		tab_select->setItem(fila, (tab_select->columnCount()) - 1, item);
 
 		break;
@@ -381,6 +390,13 @@ void QtGuiApplication1::on_pushButton_clicked() {
 
 
 void QtGuiApplication1::on_play_clicked() {
+	guardar = new Almacenar(this);
+	guardar->show();
+
+	string filepath = guardar->getPath();
+
+
+	
 	int tempo_part = ui.tempoBox->value();
 
 	int tempo_bpm = (tempo_part * 500) / 180;
@@ -441,29 +457,12 @@ void QtGuiApplication1::on_play_clicked() {
 
 	while (pos_fin_voz != 0) {
 
-		texto = texto.substr(p.getFinVoz());
+		texto = texto.substr(pos_fin_voz);
 		Partitura pnew(texto);
 		file.addPartitura(pnew, 9);
 		pos_fin_voz = pnew.getFinVoz();
 	}
 
-
-
-	/*
-	bool t = true;
-	while (t) {
-	char c;
-	cout << "Añadir track? (s/n)" << endl;
-	cin >> c;
-	if (c == 'n') {
-	t = false;
-	}
-	else {
-	Partitura pnew();
-	file.addPartitura(pnew, 9);
-	}
-	}
-	*/
 	file.finish();
 	char fileOutput[50];
 
@@ -471,14 +470,17 @@ void QtGuiApplication1::on_play_clicked() {
 	//cout << "Introduzca el nombre del archivo deseado" << endl;
 	//cin >> fileOutput;
 
-	FILE* fp = fopen("prueba.mid", "wb");
+	FILE* fp = fopen(filepath.c_str(), "wb");
 	std::fwrite(&file.at(0), 1, file.size(), fp);
 	std::fclose(fp);
 
+	close();
 
 	//cout << "Midi creado." << std::endl;
 	//cout << file.getNTracks() << std::endl;
 
 	//system("pause");
 	//return 0;
+
+
 }
