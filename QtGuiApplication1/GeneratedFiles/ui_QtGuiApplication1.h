@@ -49,6 +49,7 @@ public:
     QPushButton *nueva_voz;
     QSpinBox *tempoBox;
     QLabel *label_2;
+    QPushButton *deshacer_button;
     QMenuBar *menuBar;
     QMenu *menuArchivo;
     QToolBar *mainToolBar;
@@ -126,6 +127,9 @@ public:
         label_2 = new QLabel(centralWidget);
         label_2->setObjectName(QStringLiteral("label_2"));
         label_2->setGeometry(QRect(750, 230, 71, 16));
+        deshacer_button = new QPushButton(centralWidget);
+        deshacer_button->setObjectName(QStringLiteral("deshacer_button"));
+        deshacer_button->setGeometry(QRect(540, 230, 61, 51));
         QtGuiApplication1Class->setCentralWidget(centralWidget);
         tabWidget->raise();
         label->raise();
@@ -139,6 +143,7 @@ public:
         nueva_voz->raise();
         tempoBox->raise();
         label_2->raise();
+        deshacer_button->raise();
         menuBar = new QMenuBar(QtGuiApplication1Class);
         menuBar->setObjectName(QStringLiteral("menuBar"));
         menuBar->setGeometry(QRect(0, 0, 956, 21));
@@ -191,6 +196,7 @@ public:
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("QtGuiApplication1Class", "Voz", Q_NULLPTR));
         nueva_voz->setText(QApplication::translate("QtGuiApplication1Class", "Nueva voz", Q_NULLPTR));
         label_2->setText(QApplication::translate("QtGuiApplication1Class", "Tempo (bpm)", Q_NULLPTR));
+        deshacer_button->setText(QString());
         menuArchivo->setTitle(QApplication::translate("QtGuiApplication1Class", "Archivo", Q_NULLPTR));
     } // retranslateUi
 

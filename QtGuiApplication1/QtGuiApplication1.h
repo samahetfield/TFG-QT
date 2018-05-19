@@ -37,9 +37,11 @@ private:
 	QIcon *calderon_icon;
 	QIcon *silencio_icon;
 	QIcon *play_icon;
+	QIcon *deshacer_icon;
 
 	public slots:
 	void on_pushButton_clicked();
+	void on_deshacer_button_clicked();
 	void on_button_nota_clicked();
 	void on_button_tremolo_clicked();
 	void on_button_silencio_clicked();

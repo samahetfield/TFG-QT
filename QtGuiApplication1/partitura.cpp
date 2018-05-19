@@ -191,7 +191,7 @@ public:
 	vector<Nota> parse() {
 		vector<Nota> res;
 		if (tipo == NORMAL) {
-			cout << "Entro en normal" << endl;
+			//cout << "Entro en normal" << endl;
 			for (int i = 0;i<final;i++) {
 				for (int j = 0;j<modificador_tempo[0];j++) { // TODO: modificar tempo, hacer media de notas
 					double modif = modificador_tempo[0];
@@ -522,7 +522,7 @@ public:
 						nota_aux = stoi(aux); // Nota a reproducir
 						
 						//cout << "Numero de lineas en tremolo" << endl;
-						modificador_tempo[0]=intensidad_ini;
+						//modificador_tempo[0]=intensidad_ini;
 						modificador_tempo[1] = modificador_tempo[0];
 						
 						//int vol;

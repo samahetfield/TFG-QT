@@ -27,12 +27,14 @@ QtGuiApplication1::QtGuiApplication1(QWidget *parent)
 	 silencio_icon = new QIcon(QPixmap(".\\img\\silencio.png"));
 	 calderon_icon= new QIcon(QPixmap(".\\img\\calderon.png"));
 	 play_icon = new QIcon(QPixmap(".\\img\\play.png"));
+	 deshacer_icon = new QIcon(QPixmap(".\\img\\deshacer.png"));
 
 	ui.button_nota->setIcon(*nota_icon);
 	ui.button_tremolo->setIcon(*tremolo_icon);
 	ui.button_silencio->setIcon(*silencio_icon);
 	ui.button_calderon->setIcon(*calderon_icon);
 	ui.play->setIcon(*play_icon);
+	ui.deshacer_button->setIcon(*deshacer_icon);
 
 	ui.pushButton->setEnabled(false);
 
@@ -40,6 +42,31 @@ QtGuiApplication1::QtGuiApplication1(QWidget *parent)
 	tab_voz = new QTableWidget*[1];
 	tab_voz[0] = ui.tableWidget;
 	voces_size = 1;
+}
+
+void QtGuiApplication1::on_deshacer_button_clicked() {
+	int f_aux = ui.tabWidget->currentIndex();
+	QTableWidget *tab_select = tab_voz[f_aux];
+	tab_select->removeColumn(f_aux);
+	string voz = voces[f_aux];
+	string voz_nueva = "";
+	int pos_fin = 0;
+
+	for (int i = voz.size() - 2; i > 0 && pos_fin == 0; i--) {
+		if (voz.at(i) == '\n') {
+			pos_fin = i;
+		}
+	}
+
+	if (pos_fin == 0) {
+		voz_nueva = "";
+	}
+	else {
+		voz_nueva = voz.substr(0, pos_fin+1);
+	}
+
+	voces[f_aux] = voz_nueva;
+
 }
 
 
@@ -473,6 +500,8 @@ void QtGuiApplication1::on_play_clicked() {
 	FILE* fp = fopen(filepath.c_str(), "wb");
 	std::fwrite(&file.at(0), 1, file.size(), fp);
 	std::fclose(fp);
+
+	remove("Partitura.txt");
 
 	close();
 
