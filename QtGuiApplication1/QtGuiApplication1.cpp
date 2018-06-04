@@ -19,9 +19,12 @@ QtGuiApplication1::QtGuiApplication1(QWidget *parent)
 
 	ui.setupUi(this);
 	
+
+	// Creamos una lista con cada uno de los instrumentos disponibles en la lista desplegable
 	QStringList list = (QStringList() << "Bombo" << "Caja" << "Hit-Hat (abierto)" << "Hit-Hat (cerrado)" << "Aro de caja" << "Rimshot" << "Base (Goliat)" << "Hit-Hat (pedal)" << "Tom 1" << "Tom 2" << "Tom 3" << "Crash" << "Ride (campana)" << "Ride" << "Splash" << "Cencerro");
 	ui.comboBox->addItems(list);
 
+	//Establecemos la ruta en la que se encuentran los iconos y posteriormente asignamos esos iconos a cada botón correspondiente
 	 nota_icon = new QIcon(QPixmap(".\\img\\nota.png"));
 	 tremolo_icon = new QIcon(QPixmap(".\\img\\tremolo.png"));
 	 silencio_icon = new QIcon(QPixmap(".\\img\\silencio.png"));
@@ -38,20 +41,28 @@ QtGuiApplication1::QtGuiApplication1(QWidget *parent)
 
 	ui.pushButton->setEnabled(false);
 
+	// Inicializamos los arrays en los que iremos almacenando la información de la partitura
 	voces = new string[1];
 	tab_voz = new QTableWidget*[1];
 	tab_voz[0] = ui.tableWidget;
 	voces_size = 1;
 }
 
+// Método que se llamará para deshacer la última acción realizada
 void QtGuiApplication1::on_deshacer_button_clicked() {
 	int f_aux = ui.tabWidget->currentIndex();
 	QTableWidget *tab_select = tab_voz[f_aux];
 	tab_select->removeColumn(f_aux);
-	string voz = voces[f_aux];
+	string voz = voces[f_aux];					// En voz almacenamos todo lo que hay escrito actualmente en esa voz
 	string voz_nueva = "";
 	int pos_fin = 0;
 
+	/*
+	 En el bucle comenzaremos a contar desde atrás hasta encontrar un salto de línea
+	 Cuando encontremos el salto de línea, quiere decir que la última acción ya la hemos leído y 
+	 por lo tanto ese fragmento del string es el que debemos borrar
+	*/
+	
 	for (int i = voz.size() - 2; i > 0 && pos_fin == 0; i--) {
 		if (voz.at(i) == '\n') {
 			pos_fin = i;
@@ -107,14 +118,17 @@ void QtGuiApplication1::on_button_calderon_clicked() {
 
 }
 
+//Este método nos servirá para crear una nueva voz
+
 void QtGuiApplication1::on_nueva_voz_clicked() {
+	//Primero crearemos un nuevo QTableWidget que añadiremos al TabWidget padre
 	QWidget *nuevo_w = new QWidget();
-	QTableWidget *nueva_voz = new QTableWidget(6,0,nuevo_w);
-	nueva_voz->setGeometry(10, 10, 850, 230);
+	QTableWidget *nueva_voz = new QTableWidget(6,0,nuevo_w);		
+	nueva_voz->setGeometry(10, 10, 850, 230);					// Establecemos las dimensiones de la tabla
 
-	ui.tabWidget->addTab(nuevo_w, QString("Voz %0").arg(ui.tabWidget->count() +1));
+	ui.tabWidget->addTab(nuevo_w, QString("Voz %0").arg(ui.tabWidget->count() +1));	// La añadimos creando una nueva pestaña
 
-	QTableWidget **tab_aux = new QTableWidget*[voces_size+1];
+	QTableWidget **tab_aux = new QTableWidget*[voces_size+1];	//Redimensionamos el vector de cada TabWidget
 
 	for (int i = 0; i < voces_size; i++) {
 		tab_aux[i] = tab_voz[i];
@@ -125,7 +139,7 @@ void QtGuiApplication1::on_nueva_voz_clicked() {
 	delete[] tab_voz;
 	tab_voz = tab_aux;
 
-	string *aux = new string[voces_size + 1];
+	string *aux = new string[voces_size + 1]; //Redimensionamos el vector que almacenará la partitura de cada voz
 
 	for (int i = 0; i < voces_size; i++) {
 		aux[i] = voces[i];
@@ -140,16 +154,23 @@ void QtGuiApplication1::on_nueva_voz_clicked() {
 
 
 
-
+// Método con el que crearemos el String de la acción indicada
 void QtGuiApplication1::on_pushButton_clicked() {
 	string midi_instrumento = "";
 	string instrumento;
 	int fila = 0;
 	frase = "";
 	
+	//Comprobamos cuál es la acción que ha realizado el usuario
 	switch (boton_pulsado)
 	{
 	case 0: {
+		/*
+			En el caso de ser una Nota, comenzaremos a crear el String.
+			El programa debe recibir un string del estilo
+						Nota-127 2 35
+			Por lo que empezaremos a rellenar el string con "Nota" seguido de los valores introducidos por el usuario
+		*/
 		frase += "Nota-";
 		int intensidad = nota->getIntensidad();
 		frase += to_string(intensidad) + " ";
@@ -157,7 +178,10 @@ void QtGuiApplication1::on_pushButton_clicked() {
 		int nodo = nota->getNodo();
 		frase += to_string(nodo) + " ";
 
+
+		//Obtendremos el intrumento que el usuario desea y dependiendo del elegido, tendremos que crear el identificador MIDI.
 		instrumento = (ui.comboBox->currentText()).toUtf8().constData();
+
 
 		if (instrumento == "Bombo") {
 			midi_instrumento = "35";
@@ -211,6 +235,8 @@ void QtGuiApplication1::on_pushButton_clicked() {
 
 		frase += midi_instrumento + "\n";
 
+
+		//Finalmente, dependiendo de la intensidad, se le asignará una fila a la nota, para introducir la nota en esa fila del hexagrama
 		if (intensidad <= 22) {
 			fila = 5;
 		}
@@ -230,13 +256,16 @@ void QtGuiApplication1::on_pushButton_clicked() {
 			fila = 0;
 		}
 
+
 		int f_aux = ui.tabWidget->currentIndex();
 
 		string voz_aux = voces[f_aux];
 		voz_aux += frase;
 
+		//Almacenamos en el vector de voces el string creado
 		voces[f_aux] = voz_aux;
 
+		//Añadimos esta nota a la partitura
 		QTableWidget *tab_select = tab_voz[f_aux];
 		QString ins_tab = QString::fromStdString(instrumento);
 
@@ -250,6 +279,12 @@ void QtGuiApplication1::on_pushButton_clicked() {
 	}
 
 	case 1: {
+		/*
+		En el caso de ser una Nota, comenzaremos a crear el String.
+		El programa debe recibir un string del estilo
+		Tremolo-5 3 6 1 6 38
+		Por lo que empezaremos a rellenar el string con "Tremolo" seguido de los valores introducidos por el usuario
+		*/
 		frase += "Tremolo-";
 		string tipo_tremolo = tremolo->getTipoTremolo();
 
@@ -276,7 +311,7 @@ void QtGuiApplication1::on_pushButton_clicked() {
 			frase += "Normal "+ to_string(longitud) + " "+to_string(velocidad_ini) + " " + to_string(velocidad_ini) + " " + to_string(intensidad_ini) + " " + to_string(intensidad_ini) + " ";
 		}
 
-
+			//Obtenemos el instrumento deseado y creamos su identificador MIDI
 			instrumento = (ui.comboBox->currentText()).toUtf8().constData();
 
 			if (instrumento == "Bombo") {
@@ -334,7 +369,8 @@ void QtGuiApplication1::on_pushButton_clicked() {
 
 			string voz_aux = voces[f_aux];
 			voz_aux += frase;
-
+			
+			//Finalmente añadimos esta nueva acción al String de la partitura de esa voz y representamos la nueva acción en pantalla
 			voces[f_aux] = voz_aux;
 
 
@@ -354,6 +390,12 @@ void QtGuiApplication1::on_pushButton_clicked() {
 
 	case 2: {
 
+		/*
+		En el caso de ser un Silencio, comenzaremos a crear el String.
+		El programa debe recibir un string del estilo
+		Silencio
+		Por lo que empezaremos crearemos tantas líneas de silencio como el usuario haya indicado
+		*/
 		int longitud;
 
 		for (int i = 0; i < silencio->getLongitud(); i++) {
@@ -365,6 +407,7 @@ void QtGuiApplication1::on_pushButton_clicked() {
 		string voz_aux = voces[f_aux];
 		voz_aux += frase;
 
+		//Añadiremos estas nuevas líneas al string de la partitura de es a voz y lo representamos por pantalla
 		voces[f_aux] = voz_aux;
 
 
@@ -381,6 +424,12 @@ void QtGuiApplication1::on_pushButton_clicked() {
 	}
 
 	case 3: {
+		/*
+		En el caso de ser un Calderon, comenzaremos a crear el String.
+		El programa debe recibir un string del estilo
+		Calderon-4 3
+		Por lo que empezaremos a rellenar el string con "Calderon" seguido de los valores introducidos por el usuario
+		*/
 		frase += "Calderon-";
 		int fragmento = calderon->getFragmento();
 		frase += to_string(fragmento) + " ";
@@ -393,6 +442,7 @@ void QtGuiApplication1::on_pushButton_clicked() {
 		string voz_aux = voces[f_aux];
 		voz_aux += frase;
 
+		//Finalmente añadiremos esta nueva acción al string de esta voz y lo representaremos por pantalla
 		voces[f_aux] = voz_aux;
 
 
@@ -416,22 +466,25 @@ void QtGuiApplication1::on_pushButton_clicked() {
 }
 
 
+//Método que será llamado cuando el usuario pulse el botón para almacenar el archivo MIDI
 void QtGuiApplication1::on_play_clicked() {
-	guardar = new Almacenar(this);
+	guardar = new Almacenar(this);	//Llamaremos al explorador de archivos para que el usuario indique dónde guardar el archivo
 	guardar->show();
 
-	string filepath = guardar->getPath();
+	string filepath = guardar->getPath();	//Obtendremos la ruta en la que almacenar el archivo
 
 
 	
 	int tempo_part = ui.tempoBox->value();
 
-	int tempo_bpm = (tempo_part * 500) / 180;
+	int tempo_bpm = (tempo_part * 500) / 180;	//Obtenemos el tempo de la partitura que ha indicado el usuario
 
-	fstream archivo("Partitura.txt");
+	fstream archivo("Partitura.txt");	//Creamos un archivo de texto
 
 	string texto_partitura = "";
 
+	//En esta parte obtendremos un string general con el contenido de todas las voces creadas anteriormente,
+	// separando el contenido de cada voz por la frase "Fin voz"
 	if (voces_size > 1) {
 		for (int i = 0; i < voces_size -1; i++) {
 			texto_partitura += voces[i];
@@ -445,71 +498,54 @@ void QtGuiApplication1::on_play_clicked() {
 
 
 
-
 	if (!archivo.is_open()) {
 		archivo.open("Partitura.txt", ios::out);
 	}
 
+	//Introduciremos este string en el archivo de texto y lo cerramos
 	archivo << texto_partitura << endl;
 
 	archivo.close();
 
 
 	//Generamos archivo MIDI
-
 	string line;
 	string texto;
 	ifstream myfile("Partitura.txt");
 
 	if (myfile.is_open())
 	{
-		while (!myfile.eof())
+		while (!myfile.eof())	//Leemos todo el archivo de texto
 		{
 			getline(myfile, line);
 			texto += line + "\n";
 		}
-		//cout << texto << endl;
 		myfile.close();
 	}
-	Partitura p(texto);
+	Partitura p(texto);	//Creamos la partitura de la primera voz 
 
-	//cout << "Creada partitura" << endl;
-	MIDIfile file(tempo_bpm, 1000000);
-	//cout << "Creado MIDIfile" << endl;
-	file.crearMidiDePartitura(p, 9);
-	//cout << "finalizado MIDIdePartitura" << endl;
+	MIDIfile file(tempo_bpm, 1000000);	//Creamos un MIDIFile con el tempo que indica el usuario
+	file.crearMidiDePartitura(p, 9);	//Llamamos al método para crear la partitura con el objeto de partitura creado anteriormente
 
-	int pos_fin_voz = 0;
-	pos_fin_voz = p.getFinVoz();
+	int pos_fin_voz = 0;			
+	pos_fin_voz = p.getFinVoz();		//Obtenemos dónde se encuentra la frase "Fin voz" 
 
 	while (pos_fin_voz != 0) {
 
-		texto = texto.substr(pos_fin_voz);
-		Partitura pnew(texto);
-		file.addPartitura(pnew, 9);
-		pos_fin_voz = pnew.getFinVoz();
+		texto = texto.substr(pos_fin_voz);	//Creamos un nuevo string sin la voz añadida
+		Partitura pnew(texto);				//Creamos una nueva partitura
+		file.addPartitura(pnew, 9);			// Añadimos esta partitura al archivo MIDI creado anteriormente
+		pos_fin_voz = pnew.getFinVoz();		//Obtenemos la nueva posición de fin voz
 	}
 
 	file.finish();
 	char fileOutput[50];
 
-
-	//cout << "Introduzca el nombre del archivo deseado" << endl;
-	//cin >> fileOutput;
-
-	FILE* fp = fopen(filepath.c_str(), "wb");
+	FILE* fp = fopen(filepath.c_str(), "wb");		//Almacenamos el archivo en el directorio indicado por el usuario
 	std::fwrite(&file.at(0), 1, file.size(), fp);
 	std::fclose(fp);
 
-	remove("Partitura.txt");
+	remove("Partitura.txt");					//Eliminamos el archivo de texto creado.
 
 	close();
-
-	//cout << "Midi creado." << std::endl;
-	//cout << file.getNTracks() << std::endl;
-
-	//system("pause");
-	//return 0;
-
-
 }

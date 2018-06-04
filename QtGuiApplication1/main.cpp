@@ -7,9 +7,9 @@
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
-	QtGuiApplication1 w;
+	QtGuiApplication1 w; // Llamamos a la clase de la interfaz ejecutable
 
-	w.show();
+	w.show(); // Mostramos la ventana de la interfaz
 
 	
 	return a.exec();

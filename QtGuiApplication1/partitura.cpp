@@ -600,7 +600,7 @@ public:
 		}
 	}
 
-
+	/*
 	Partitura() {
 		bool b = true;
 		while (b) {
@@ -768,6 +768,7 @@ public:
 			else b = false;
 		}
 	}
+	*/
 
 	void mostrarNotas() {
 		for (unsigned i = 0;i<notas.size();i++) {
@@ -782,4 +783,5 @@ public:
 	int getFinVoz() {
 		return pos_fin_voz;
 	}
+
 };

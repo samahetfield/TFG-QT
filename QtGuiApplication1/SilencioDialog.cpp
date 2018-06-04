@@ -13,7 +13,7 @@ SilencioDialog::~SilencioDialog()
 {
 }
 
-
+// Al pulsar el botón almacenaremos los valores introducidos por el usuario
 void SilencioDialog::on_pushButton_clicked() {
 	longitud = ui.spinBox->value();
 

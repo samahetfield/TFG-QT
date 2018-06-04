@@ -13,7 +13,7 @@ NotaDialog::~NotaDialog()
 {
 }
 
-
+// Al pulsar el botón almacenaremos los valores introducidos por el usuario
 void NotaDialog::on_pushButton_clicked(){
 	
 	intensidad = ui.spinBox->value();
