@@ -43,7 +43,7 @@ class Nota {
 						// 0.25 stacattissimo
 	double sordina;	// Nivel de aplaque de nota
 	double modTempo;
-	int no = 35;
+	int no;
 public:
 	Nota() {
 		intensidad = 0;

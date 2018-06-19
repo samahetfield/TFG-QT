@@ -477,6 +477,8 @@ void QtGuiApplication1::on_play_clicked() {
 	
 	int tempo_part = ui.tempoBox->value();
 
+	tempo_part -= 10;
+
 	int tempo_bpm = (tempo_part * 500) / 180;	//Obtenemos el tempo de la partitura que ha indicado el usuario
 
 	fstream archivo("Partitura.txt");	//Creamos un archivo de texto
